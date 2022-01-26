@@ -109,7 +109,28 @@ describe('assertEquals', () => {
     it('when expected and actual are different objects', () => {
       expect(() => assertEquals({key1: 'test'}, {key2: 'test'})).toThrow('String values do not match');
       expect(() => assertEquals({key1: 'value1'}, {key1: 'value2'})).toThrow('String values do not match');
-      expect(() => assertEquals({}, {key1: 'value1'})).toThrow('Arrays do not match');
+      expect(() => assertEquals({}, {key1: 'value1'})).toThrow('Object keys do not match');
     });
   });
+
+  describe('dates', () => {
+    it('should throw different dates', () => {
+      const date1 = new Date('2022-01-26T03:24:00');
+      const date2 = new Date('2022-01-27T03:24:00');
+      expect(() => assertEquals(date1, date2)).toThrow('Dates do not match, expected Wed Jan 26 2022 03:24:00 GMT+0000 (Greenwich Mean Time), actual Thu Jan 27 2022 03:24:00 GMT+0000 (Greenwich Mean Time)');
+    });
+    it('show not throw on the same date', () => {
+      const date1 = new Date('2022-01-27T00:00:01');
+      const date2 = new Date('2022-01-27T00:00:01');
+      expect(() => assertEquals(date1, date2)).not.toThrow();
+    })
+  })
+
+  describe('exercise', () => {
+    it('should throw', () => {
+      const obj1 = {featuring: {dog: 'zinha', owner: 'arav', team: ['lucy', 'osman', new Date('2022-01-27T03:24:00')]}};
+      const obj2 = {featuring: {dog: 'zinha', owner: 'arav', team: ['lucy', 'osman', new Date('2022-01-26T03:24:00')]}};
+      expect(() => assertEquals(obj1, obj2)).toThrow();
+    });
+  })
 });
